@@ -1,3 +1,5 @@
+import pl.jaceklaskowski.nauczyciel.Pierwiastek
+
 class BootStrap {
 
      def init = { servletContext ->

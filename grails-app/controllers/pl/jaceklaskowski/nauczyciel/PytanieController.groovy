@@ -9,6 +9,6 @@ class PytanieController {
     }
 
     def zadaj = {
-        render 'A Ty jeszcze tutaj?! Zmykaj do domu. (dokończyć PytanieController.zadaj)'
+        render "A Ty jeszcze tutaj?! Zmykaj do domu. (TODO: PytanieController.zadaj) - liczba pierwiastków: ${Pierwiastek.count()}"
     }
 }

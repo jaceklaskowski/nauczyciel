@@ -25,7 +25,7 @@ environments {
 	}
 	production {
 		dataSource {
-			dbCreate = "update"
+			dbCreate = "create-drop"
 			url = "jdbc:postgresql://10.254.242.113/db_1_4740"
                         driverClassName = "org.postgresql.Driver"
                         dialect ="org.hibernate.dialect.PostgreSQLDialect"
@@ -33,4 +33,14 @@ environments {
                         password = "6ch2k543"
 		}
 	}
+        jacek {
+		dataSource {
+			dbCreate = "create-drop" // one of 'create', 'create-drop','update'
+                        url = "jdbc:mysql://localhost/nauczycieldb"
+                        driverClassName = "com.mysql.jdbc.Driver"
+                        dialect ="org.hibernate.dialect.MySQLDialect"
+                        username = "root"
+                        password = "passw0rd"
+		}
+        }
 }

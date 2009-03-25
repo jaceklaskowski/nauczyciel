@@ -6,38 +6,52 @@ class PytanieController {
     }
 
     def rodzaj = {
+        session.rodzaj = params.rodzaj
     }
 
     def zadaj = {
         def pierwiastki = Pierwiastek.findAll();
 
         def random = new Random();
-        def pos = random.nextInt(pierwiastki.size() - 1)
+        def pos = random.nextInt(pierwiastki.size())
         assert pos >= 0
         assert pos < pierwiastki.size()
-        [pierwiastek: pierwiastki[pos]]
+
+        if (session.rodzaj?.class == String[].class) {
+            def typ = random.nextInt(session.rodzaj.size())
+            session.losowyTyp = session.rodzaj[typ]
+            render(view:session.losowyTyp, model:[pierwiastek: pierwiastki[pos]])
+        } else {
+            session.losowyTyp = session.rodzaj
+            render(view:session.losowyTyp, model:[pierwiastek: pierwiastki[pos]])
+        }
     }
 
     def sprawdz = {
-        def pierwiastek = Pierwiastek.findBySymbol(params.symbol)
-        println "${params.symbol} = ${pierwiastek.nazwa}, ${params.nazwa}"
-        if (!pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)) {
-            flash.message = "Odpowiedź niepoprawna dla symbolu ${params.symbol}. Spróbuj jeszcze raz."
+        def porazka = true
+        def pierwiastek = null
+        switch (session.losowyTyp) {
+            case "symbol":
+                pierwiastek = Pierwiastek.findBySymbol(params.symbol)
+                porazka = !pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)
+            break;
+            case "nazwa":
+                pierwiastek = Pierwiastek.findByNazwa(params.nazwa)
+                porazka = !pierwiastek.symbol.equalsIgnoreCase(params.symbol)
+            break;
+            case "liczbaAtomowa":
+                pierwiastek = Pierwiastek.findByLiczbaAtomowa(params.liczbaAtomowa)
+                porazka = !pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)
+            break;
+        }
+        
+        if (porazka) {
+            flash.message = "Odpowiedź niepoprawna. Spróbuj jeszcze raz."
+            render(view:session.losowyTyp,model:[pierwiastek:pierwiastek])
         } else {
             flash.message = "Brawo! Odpowiedź poprawna!"
+            redirect(action:"zadaj")
         }
-        render(view:"zadaj",model:[pierwiastek:pierwiastek])
-    }
-    
-    def zadajX = {
-        // http://pl.wikipedia.org/wiki/Pierwiastek_chemiczny
-        // pierwiastki od 1 do 111 zostały oficjalnie uznane przez IUPAC
-        random = new Random();
-        next = random.nextInt(110) + 1
-        assert next > 1
-        assert next < 111
-        liczbaAtomowa = next
-        pierwiastek = Pierwiastek.findByLiczbaAtomowa(liczbaAtomowa)
-        [pierwiastek:pierwiastek]
+        
     }
 }

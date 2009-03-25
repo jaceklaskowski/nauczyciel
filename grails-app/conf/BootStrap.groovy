@@ -4,9 +4,9 @@ import pl.jaceklaskowski.nauczyciel.Slowo
 class BootStrap {
 
      def init = { servletContext ->
-         new Pierwiastek(symbol:'N', nazwa:'azot').save()
-         new Pierwiastek(symbol:'P', nazwa:'fosfor').save()
-         new Pierwiastek(symbol:'K', nazwa:'potas').save()
+         new Pierwiastek(symbol:'N', nazwa:'azot', liczbaAtomowa:7).save()
+         new Pierwiastek(symbol:'P', nazwa:'fosfor', liczbaAtomowa:15).save()
+         new Pierwiastek(symbol:'K', nazwa:'potas', liczbaAtomowa:19).save()
          new Slowo(pytanie:'kot', odpowiedz:'cat').save()
          new Slowo(pytanie:'pies', odpowiedz:'dog').save()
          new Slowo(pytanie:'krowa', odpowiedz:'cow').save()

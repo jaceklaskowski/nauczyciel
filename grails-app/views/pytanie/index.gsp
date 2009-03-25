@@ -14,7 +14,9 @@
       <label for="symbol">Symbole</label>
       <g:checkBox name="rodzaj" value="nazwa" id="nazwa" checked="no" />
       <label for="nazwa">Nazwy</label>
-      <br>
+      <g:checkBox name="rodzaj" value="liczbaAtomowa" id="liczba" checked="no" />
+      <label for="liczbaAtomowa">Liczba atomowa</label>
+      <br/>
       <input type="submit" value="Zatwierdź"/>
     </g:form>
   </body>

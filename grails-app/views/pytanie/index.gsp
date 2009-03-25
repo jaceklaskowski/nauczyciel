@@ -3,6 +3,7 @@
 <html>
   <head>
       <title>Nauczyciel - wybór rodzaju pytań</title>
+      <meta name="layout" content="main"/>
   </head>
   <body>
     <h1>Wybierz rodzaj pytań</h1>

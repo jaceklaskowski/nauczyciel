@@ -20,11 +20,10 @@ class PytanieController {
         if (session.rodzaj?.class == String[].class) {
             def typ = random.nextInt(session.rodzaj.size())
             session.losowyTyp = session.rodzaj[typ]
-            render(view:session.losowyTyp, model:[pierwiastek: pierwiastki[pos]])
         } else {
             session.losowyTyp = session.rodzaj
-            render(view:session.losowyTyp, model:[pierwiastek: pierwiastki[pos]])
         }
+        [pierwiastek: pierwiastki[pos]]
     }
 
     def sprawdz = {
@@ -47,9 +46,13 @@ class PytanieController {
         
         if (porazka) {
             flash.message = "Odpowiedź niepoprawna. Spróbuj jeszcze raz."
-            render(view:session.losowyTyp,model:[pierwiastek:pierwiastek])
+            session.zle = session.zle?.plus(1) ?: 1;
+            session.lacznie = session.lacznie?.plus(1) ?: 1;
+            render(view:"zadaj",model:[pierwiastek:pierwiastek])
         } else {
             flash.message = "Brawo! Odpowiedź poprawna!"
+            session.dobrze = session.dobrze?.plus(1) ?: 1;
+            session.lacznie = session.lacznie?.plus(1) ?: 1;
             redirect(action:"zadaj")
         }
         

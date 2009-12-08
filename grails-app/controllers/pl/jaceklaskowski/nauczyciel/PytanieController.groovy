@@ -49,7 +49,7 @@ class PytanieController {
 
     def sprawdz = {
         def porazka = true
-        def pierwiastek = null
+        def pierwiastek, slowko
         switch (session.losowyTyp) {
             case "symbol":
             pierwiastek = Pierwiastek.findBySymbol(params.symbol)
@@ -63,13 +63,17 @@ class PytanieController {
             pierwiastek = Pierwiastek.findByLiczbaAtomowa(params.liczbaAtomowa)
             porazka = !pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)
             break;
+            case "slowka":
+            slowko = Slowo.get(params.id)
+            porazka = !slowko.plTresc.equalsIgnoreCase(params.plTresc)
+            break;
         }
         
         if (porazka) {
             flash.message = "Odpowiedź niepoprawna. Spróbuj jeszcze raz."
             session.zle = session.zle?.plus(1) ?: 1;
             session.lacznie = session.lacznie?.plus(1) ?: 1;
-            render(view:"zadaj",model:[pierwiastek:pierwiastek])
+            render(view:"zadaj",model:[pierwiastek:pierwiastek, slowko: slowko])
         } else {
             flash.message = "Brawo! Odpowiedź poprawna!"
             session.dobrze = session.dobrze?.plus(1) ?: 1;

@@ -6,24 +6,45 @@ class PytanieController {
     }
 
     def rodzaj = {
+        // rodzaj should be part of debugging infrastructure not the application's itself
         session.rodzaj = params.rodzaj
     }
 
     def zadaj = {
-        def pierwiastki = Pierwiastek.findAll();
+        // choose questions
+        // their type comes in param.rodzaj request param
+        // they're 4 types so to choose the right ones
+        // Criteria DSL seems to be the way to go
+        //
+        // Dunno how it should be done in a proper way atm
+        // That's where Clojure lazy collection could really help
+        def kolekcja
+        if (params.rodzaj?.contains("slowka")) {
+            kolekcja = Slowo.findAll();
+            session.losowyTyp = "slowka"
 
-        def random = new Random();
-        def pos = random.nextInt(pierwiastki.size())
-        assert pos >= 0
-        assert pos < pierwiastki.size()
+            // duplication - see below
+            def random = new Random();
+            def pos = random.nextInt(kolekcja.size())
 
-        if (session.rodzaj?.class == String[].class) {
-            def typ = random.nextInt(session.rodzaj.size())
-            session.losowyTyp = session.rodzaj[typ]
-        } else {
-            session.losowyTyp = session.rodzaj
+            return [slowko: kolekcja[pos]]
+        } else {    // it should really be cascade if not exclusive if
+
+            def pierwiastki = Pierwiastek.findAll();
+
+            def random = new Random();
+            def pos = random.nextInt(pierwiastki.size())
+            assert pos >= 0
+            assert pos < pierwiastki.size()
+
+            if (session.rodzaj?.class == String[].class) {
+                def typ = random.nextInt(session.rodzaj.size())
+                session.losowyTyp = session.rodzaj[typ]
+            } else {
+                session.losowyTyp = session.rodzaj
+            }
+            [pierwiastek: pierwiastki[pos]]
         }
-        [pierwiastek: pierwiastki[pos]]
     }
 
     def sprawdz = {
@@ -31,16 +52,16 @@ class PytanieController {
         def pierwiastek = null
         switch (session.losowyTyp) {
             case "symbol":
-                pierwiastek = Pierwiastek.findBySymbol(params.symbol)
-                porazka = !pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)
+            pierwiastek = Pierwiastek.findBySymbol(params.symbol)
+            porazka = !pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)
             break;
             case "nazwa":
-                pierwiastek = Pierwiastek.findByNazwa(params.nazwa)
-                porazka = !pierwiastek.symbol.equalsIgnoreCase(params.symbol)
+            pierwiastek = Pierwiastek.findByNazwa(params.nazwa)
+            porazka = !pierwiastek.symbol.equalsIgnoreCase(params.symbol)
             break;
             case "liczbaAtomowa":
-                pierwiastek = Pierwiastek.findByLiczbaAtomowa(params.liczbaAtomowa)
-                porazka = !pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)
+            pierwiastek = Pierwiastek.findByLiczbaAtomowa(params.liczbaAtomowa)
+            porazka = !pierwiastek.nazwa.equalsIgnoreCase(params.nazwa)
             break;
         }
         

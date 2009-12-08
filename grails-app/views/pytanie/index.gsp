@@ -15,18 +15,18 @@
         A może słówka z angielskiego?
         Możesz wybrać dowoloną kombinację pytań, a wtedy zostaną one wymieszane.
         <div>
-          <g:form action="rodzaj">
-            <g:checkBox name="rodzaj" value="symbol" id="symbol" checked="no" />
+          <g:form action="zadaj">
+            <g:checkBox name="rodzaj" value="symbol" id="symbol" checked="${false}" />
             <label for="symbol">Symbole</label>
             <br>
-            <g:checkBox name="rodzaj" value="nazwa" id="nazwa" checked="no" />
+            <g:checkBox name="rodzaj" value="nazwa" id="nazwa" checked="${false}" />
             <label for="nazwa">Nazwy</label>
             <br>
-            <g:checkBox name="rodzaj" value="liczbaAtomowa" id="liczba" checked="no" />
+            <g:checkBox name="rodzaj" value="liczbaAtomowa" id="liczba" checked="${false}" />
             <label for="liczba">Liczba atomowa</label>
             <br>
-            <g:checkBox name="rodzaj" value="slowka" id="slowka" checked="yes" />
-            <label for="slowka">Słówka</label>
+            <g:checkBox name="rodzaj" value="slowka" id="slowka" checked="${true}" />
+            <label for="slowka">Słówka (działa, reszta niekoniecznie)</label>
             <br>
             <span class="button"><input type="submit" class="edit" value="Zatwierdź" /></span>
           </g:form>

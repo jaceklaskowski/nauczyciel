@@ -2,6 +2,8 @@ package pl.jaceklaskowski.nauczyciel
 
 class PytanieController {
 
+    def pytanieService
+    
     def index = {
     }
 
@@ -12,22 +14,16 @@ class PytanieController {
 
     def zadaj = {
         // choose questions
-        // their type comes in param.rodzaj request param
+        // their types come in params.rodzaj request param
         // they're 4 types so to choose the right ones
         // Criteria DSL seems to be the way to go
         //
         // Dunno how it should be done in a proper way atm
         // That's where Clojure lazy collection could really help
-        def kolekcja
-        if (params.rodzaj?.contains("slowka")) {
-            kolekcja = Slowo.findAll();
+        System.out.println("${params.rodzaj}")
+        if (!params.rodzaj || params.rodzaj?.contains("slowka")) {
             session.losowyTyp = "slowka"
-
-            // duplication - see below
-            def random = new Random();
-            def pos = random.nextInt(kolekcja.size())
-
-            return [slowko: kolekcja[pos]]
+            return [slowko: pytanieService.wylosujSlowo()]
         } else {    // it should really be cascade if not exclusive if
 
             def pierwiastki = Pierwiastek.findAll();
@@ -48,6 +44,7 @@ class PytanieController {
     }
 
     def sprawdz = {
+        System.out.println("Wywolano sprawdz...")
         def porazka = true
         def pierwiastek, slowko
         switch (session.losowyTyp) {
@@ -81,5 +78,29 @@ class PytanieController {
             redirect(action:"zadaj")
         }
         
+    }
+
+    /**
+     * A copy of the above sprawdz action
+     */
+    def nastepneSlowoAjax = {
+        System.out.println("Wywolano via ajax...")
+        def porazka = true
+        def pierwiastek, slowko
+        switch (session.losowyTyp) {
+            case "slowka":
+            slowko = Slowo.get(params.id)
+            porazka = !slowko.plTresc.equalsIgnoreCase(params.plTresc)
+            break;
+        }
+        if (porazka) {
+            session.zle = session.zle?.plus(1) ?: 1;
+            session.lacznie = session.lacznie?.plus(1) ?: 1;
+            render(template:session.losowyTyp, model:[pierwiastek:pierwiastek, slowko: slowko])
+        } else {
+            session.dobrze = session.dobrze?.plus(1) ?: 1;
+            session.lacznie = session.lacznie?.plus(1) ?: 1;
+            render(template:session.losowyTyp, model: [slowko: pytanieService.wylosujSlowo()])
+        }
     }
 }

@@ -13,7 +13,5 @@
     </g:hasErrors>
     <g:message code="${flash.message}" />
     <g:render template="${session.losowyTyp}"/>
-    <br/><br/>
-    <g:render template="wynik"/>
   </body>
 </html>

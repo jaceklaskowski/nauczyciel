@@ -20,8 +20,7 @@ class PytanieController {
         //
         // Dunno how it should be done in a proper way atm
         // That's where Clojure lazy collection could really help
-        System.out.println("${params.rodzaj}")
-        if (!params.rodzaj || params.rodzaj?.contains("slowka")) {
+        if (!params.rodzaj || "slowka" in params.rodzaj) {
             session.losowyTyp = "slowka"
             return [slowko: pytanieService.wylosujSlowo()]
         } else {    // it should really be cascade if not exclusive if

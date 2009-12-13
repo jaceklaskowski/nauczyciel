@@ -3,6 +3,8 @@ package pl.jaceklaskowski.nauczyciel
 class PytanieController {
 
     def pytanieService
+
+    def scaffold = Slowo
     
     def index = {
     }

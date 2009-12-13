@@ -6,7 +6,7 @@
   </head>
   <body>
     <div class="nav">
-      <span class="menuButton"><a class="home" href="${createLinkTo(url:'')}">Home</a></span>
+      <span class="menuButton"><a class="home" href="${createLinkTo(url:'')}">Domek</a></span>
     </div>
     <div class="body">
       <h1>Wybierz rodzaj pytań</h1>

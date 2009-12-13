@@ -6,10 +6,13 @@
   </head>
   <body>
     <div class="nav">
-      <span class="menuButton"><a class="home" href="${createLink(action:'index')}">Home</a></span>
+      <span class="menuButton">
+        <a class="home" href="${createLink(action:'index')}">Domek</a>
+        <a class="create" href="${createLink(action:'create')}">Dodaj słówko</a>
+      </span>
     </div>
     <div class="body">
-      <h1>Pytanie</h1>
+      <h1><g:message code="nauczyciel.podajTlumaczenie" default="Podaj tłumaczenie" /></h1>
       <div class="dialog">
         <g:hasErrors>
           <g:eachError><p>${it.defaultMessage}</p></g:eachError>
